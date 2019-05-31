@@ -1,0 +1,10 @@
+*.ipch
+*.bin
+*.json
+.vscode/ipch/427bb8db5411b2de/particle.ipch
+include/event
+include/particle
+include/simulate
+include/a.out
+include/collisionsys
+.vscode/ipch/427bb8db5411b2de/particle.ipch

@@ -21,8 +21,7 @@ struct vector2D {
 };
 
 //A rigid body particle
-class Particle
-{
+class Particle {
 private:
     vector2D velocity;
     double radius;
@@ -33,7 +32,7 @@ public:
     vector2D pos;
     Particle(double x, double y, double radius,
                         double vx ,double vy,  double mass);
-    double collidesVWall();
+    double collidesVWall(); 
     double collidesHWall();
     double collidesWith(Particle*);
     void bounceVWall();
@@ -41,6 +40,6 @@ public:
     void bounce(Particle*);
     int getCollisionCount() const; //TODO : 
     void move(double);
-    sf::CircleShape getCircle();
+    sf::CircleShape* getShape();
 
 };
