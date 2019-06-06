@@ -1,4 +1,6 @@
-#pragma once
+#ifndef PARTICLE_H
+#define PARTICLE_H
+
 #include<limits>
 #include<cmath>
 #include<iostream>
@@ -30,6 +32,7 @@ private:
     sf::CircleShape circle;
 public:
     vector2D pos;
+    vector2D prevPos;
     Particle(double x, double y, double radius,
                         double vx ,double vy,  double mass);
     double collidesVWall(); 
@@ -41,5 +44,8 @@ public:
     int getCollisionCount() const; //TODO : 
     void move(double);
     sf::CircleShape* getShape();
+    void updatePos();
 
 };
+
+#endif

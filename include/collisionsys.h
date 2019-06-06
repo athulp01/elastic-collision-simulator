@@ -1,3 +1,6 @@
+#ifndef COLLISIONSYS_H
+#define COLLISIONSYS_H
+
 #include<queue>
 #include<vector>
 #include"event.h"
@@ -15,3 +18,5 @@ public:
     void simulate();
     void redraw();
 };
+
+#endif

@@ -1,7 +1,7 @@
 #include "collisionsys.h"
 
-#define WINDOW_DIM 1000
-#define FPS 1
+#define WINDOW_DIM 800
+#define FPS 30
 
 
 bool operator<(const Event &a, const Event &b) {
@@ -40,7 +40,6 @@ void CollisionSystem::simulate() {
 
         if(!current.isValid()) continue;
         
-        std::cerr<<"Time is "<<current.getTime()<<"\n";
         for(auto i = particles.begin(); i != particles.end(); i++) {
             i->move(current.getTime() - time);
         }
@@ -59,9 +58,21 @@ void CollisionSystem::simulate() {
 }
 
 void CollisionSystem::redraw() {
-    window.clear(sf::Color::Black);
-    for(auto i = particles.begin(); i != particles.end(); i++) {
-        window.draw(*i->getShape());
+    double steps = 10;
+    vector2D delta[particles.size()];
+    for(int i = 0; i<particles.size(); i++) {
+        delta[i].x = (particles[i].pos.x - particles[i].prevPos.x) / steps;
+        delta[i].y = (particles[i].pos.y - particles[i].prevPos.y) / steps;
     }
-    window.display();
+    while(steps--) {
+        window.clear(sf::Color::Black);
+        for(int i = 0; i<particles.size(); i++) {
+            particles[i].prevPos.x += delta[i].x;
+            particles[i].prevPos.y += delta[i].y;
+            particles[i].updatePos();
+            window.draw(*particles[i].getShape());
+        }
+        window.display();
+    }
 }
+

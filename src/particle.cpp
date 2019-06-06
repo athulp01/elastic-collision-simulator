@@ -1,7 +1,8 @@
 #include "particle.h"
 #include<cmath>
+#include<assert.h>
 
-#define SCALE_FACTOR 100
+#define SCALE_FACTOR 70
 
 double mod(const vector2D &a, const vector2D &b) {
     return sqrt(pow(a.x - b.x, 2) + pow(a.y-b.y, 2));
@@ -11,6 +12,7 @@ Particle::Particle(double x, double y, double radius,
                             double vx, double vy, double mass) {
     this->velocity.x = vx; this->velocity.y = vy;
     this->pos.x = x; this->pos.y = y;
+    this->prevPos = pos;
     this->radius = radius;
     this->mass = mass;
     this->collisionCount = 0;
@@ -57,13 +59,11 @@ double Particle::collidesWith(Particle *that) {
 
 void Particle::bounceHWall() { 
     this->velocity.y = -this->velocity.y; 
-    std::cout<<"Particle at ("<<pos.x<<","<<pos.y<<") collided with HWall\n";
     this->collisionCount++;
 }
 
 void Particle::bounceVWall() { 
     velocity.x = -velocity.x;
-    std::cout<<"Particle at ("<<pos.x<<","<<pos.y<<") collided with VWall\n";
     this->collisionCount++;
 }
 
@@ -81,7 +81,6 @@ void Particle::bounce(Particle* that) {
     this->velocity.y += Jy / this->mass;
     that->velocity.x -= Jx / that->mass;
     that->velocity.y -= Jy / that->mass;
-    std::cout<<"Particle at ("<<pos.x<<","<<pos.y<<") collided with ("<<that->pos.x<<","<<that->pos.y<<") \n";
     this->collisionCount++;
     that->collisionCount++;
 }
@@ -89,13 +88,19 @@ void Particle::bounce(Particle* that) {
 int Particle::getCollisionCount() const{return this->collisionCount;}
 
 void Particle::move(double time) {
+    prevPos = pos;
     pos.x += velocity.x*time;
     pos.y += velocity.y*time;
-    this->circle.setPosition(float(pos.x)*SCALE_FACTOR , float(pos.y)*SCALE_FACTOR);
+   // assert(pos.x >= 0 && pos.x <= 10);
+    //assert(pos.y >= 0 && pos.y <= 10);
+
 }
 
 sf::CircleShape* Particle::getShape() {
     return &this->circle;
 }
 
+void Particle::updatePos() {
+    circle.setPosition(prevPos.x*SCALE_FACTOR, prevPos.y*SCALE_FACTOR);
+}
 
