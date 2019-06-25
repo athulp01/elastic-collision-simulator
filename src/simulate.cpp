@@ -13,12 +13,12 @@ int main() {
     double upper_bound = 9;
     std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
     std::default_random_engine re;
-    int n = 5;
+    int n = 20;
     while(n--) {
         particles.push_back(Particle(unif(re), unif(re), .2, unif(re), unif(re), 2));
     }
-    particles.push_back(Particle(0.5, 0.5, 0.1, 0, 0, 4));
-
+    particles.push_back(Particle(0,0,0.2,15,0,2));
+    particles.push_back(Particle(0.4,0,0.2,30,0,2));
     CollisionSystem sys(particles);
 
     sys.simulate();

@@ -1,7 +1,7 @@
 #include "collisionsys.h"
 
 #define WINDOW_DIM 800
-#define FPS 30
+#define FPS 60
 
 
 bool operator<(const Event &a, const Event &b) {
@@ -31,6 +31,7 @@ void CollisionSystem::simulate() {
         predict(&*i);
     }
     pq.push(Event(nullptr, nullptr, 0.0));
+    int count = 0;
     while(!pq.empty()) {
         Event current = pq.top(); pq.pop();
 
@@ -43,11 +44,12 @@ void CollisionSystem::simulate() {
         for(auto i = particles.begin(); i != particles.end(); i++) {
             i->move(current.getTime() - time);
         }
-        redraw();
+        redraw(current.getTime() - time);
+	count++;
 
         time = current.getTime();
         
-        if(p1 == nullptr && p2 == nullptr) redraw();
+        if(p1 == nullptr && p2 == nullptr); 
         else if(p1 == nullptr) p2->bounceHWall();
         else if(p2 == nullptr) p1->bounceVWall();
         else p1->bounce(p2);
@@ -57,22 +59,18 @@ void CollisionSystem::simulate() {
     }
 }
 
-void CollisionSystem::redraw() {
-    double steps = 10;
-    vector2D delta[particles.size()];
-    for(int i = 0; i<particles.size(); i++) {
-        delta[i].x = (particles[i].pos.x - particles[i].prevPos.x) / steps;
-        delta[i].y = (particles[i].pos.y - particles[i].prevPos.y) / steps;
-    }
-    while(steps--) {
+void CollisionSystem::redraw(double timeToCol) {
+    double counter = 0, minTime = 0.001;
+    while(counter <= timeToCol) {
         window.clear(sf::Color::Black);
         for(int i = 0; i<particles.size(); i++) {
-            particles[i].prevPos.x += delta[i].x;
-            particles[i].prevPos.y += delta[i].y;
+            particles[i].prevPos.x += particles[i].velocity.x * minTime; 
+            particles[i].prevPos.y += particles[i].velocity.y * minTime;
             particles[i].updatePos();
             window.draw(*particles[i].getShape());
         }
         window.display();
+	counter += minTime;
     }
 }
 

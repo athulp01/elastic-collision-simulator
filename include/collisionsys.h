@@ -16,7 +16,7 @@ public:
     CollisionSystem(std::vector<Particle>);
     void predict(Particle*);
     void simulate();
-    void redraw();
+    void redraw(double);
 };
 
 #endif

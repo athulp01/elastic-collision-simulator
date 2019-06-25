@@ -25,12 +25,12 @@ struct vector2D {
 //A rigid body particle
 class Particle {
 private:
-    vector2D velocity;
     double radius;
     double mass;
     int collisionCount;
     sf::CircleShape circle;
 public:
+    vector2D velocity;
     vector2D pos;
     vector2D prevPos;
     Particle(double x, double y, double radius,
